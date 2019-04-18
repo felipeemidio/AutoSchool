@@ -29,6 +29,27 @@ h3 {
   outline: none;
 }
 
+.class-entity {
+  display: flex;
+  margin-bottom: 16px;
+}
+.class-entity__content {
+  flex: 1;
+  color: #ffffff;
+}
+.class-entity__holder {
+  height: 38px;
+  display: table;
+}
+.class-entity__holder button {
+  display: table-cell;
+  vertical-align: middle;
+  background-color: #444444;
+  padding: 8px 16px;
+  margin: 0px 8px;
+  border-radius: 2px;
+}
+
 .new-classes {
   display: flex;
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import NewClasses from './newClasses';
-import Input from '../Generics/Input';
 import StudentsServices from '../../services/StudentsServices';
+import ClassEntity from './ClassEntity'
 
 const KEY_STORAGE = "classes";
 
@@ -49,6 +49,10 @@ class ClassesPage extends React.Component {
             })
           }}
         />
+        <ClassEntity />
+        <ClassEntity />
+        <ClassEntity />
+        <ClassEntity />
       </React.Fragment>
     );
   }
