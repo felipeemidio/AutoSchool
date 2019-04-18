@@ -6,18 +6,26 @@ class NewClasses extends React.Component {
   }
   render() {
     const { text } = this.state;
-    const { open } = this.props;
-    return(
-      <div className="input-student">
-        <input
-          type="text"
-          placeholder="Novo aluno..."
-          value={text}
-          onChange={event => this.setState({ 
-            text: event.target.value
-          })}
-        />
-      </div>
+    const { open, onCancel, onAdd } = this.props;
+    return (
+      <React.Fragment>
+        {open && (
+          <div className="new-classes">
+            <div className="input-student">
+              <input
+                type="text"
+                placeholder="Nome da Turma..."
+                value={text}
+                onChange={event => this.setState({
+                  text: event.target.value
+                })}
+              />
+            </div>
+            <button onClick={onCancel}>Cancelar</button>
+            <button onClick={onAdd}>Adicionar</button>
+          </div>
+        )}
+      </React.Fragment>
     );
   }
 }

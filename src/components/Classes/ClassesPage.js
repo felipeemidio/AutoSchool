@@ -3,29 +3,52 @@ import NewClasses from './newClasses';
 import Input from '../Generics/Input';
 import StudentsServices from '../../services/StudentsServices';
 
-const KEY_STORAGE="classes";
+const KEY_STORAGE = "classes";
 
 class ClassesPage extends React.Component {
-  
+
   state = {
-    classes: []
+    classes: [],
+    openInput: false,
   };
 
+  setOpenInput(value) {
+    this.setState({ openInput: value });
+  }
+
   componentDidMount() {
-    StudentsServices.load(KEY_STORAGE).then(classes => this.setState({classes}));
+    StudentsServices.load(KEY_STORAGE).then(classes => this.setState({ classes }));
   }
 
   render() {
-    return(
+    const { classes, openInput } = this.state;
+    return (
       <React.Fragment>
         <h1>Aulas Práticas</h1>
         <div className="add-scope">
           <div className="separator" />
-          <button>
+          <button onClick={() => this.setOpenInput(true)}>
             <i className="material-icons">add</i>
           </button>
         </div>
-        <NewClasses />
+        <NewClasses
+          open={openInput}
+          onCancel={() => this.setOpenInput(false)}
+          onAdd={text => {
+            if (!text) {
+              return null;
+            }
+            this.setState(prevState => {
+              const newClassesList = prevState.students.concat({
+                id: uuid(),
+                className: text,
+                students: [],
+              })
+              StudentsServices.save(KEY_STORAGE, newClassesList);
+              return { classes: newClassesList }
+            })
+          }}
+        />
       </React.Fragment>
     );
   }

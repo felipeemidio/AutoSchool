@@ -30028,19 +30028,28 @@ function (_React$Component) {
       var _this2 = this;
 
       var text = this.state.text;
-      var open = this.props.open;
-      return _react.default.createElement("div", {
+      var _this$props = this.props,
+          open = _this$props.open,
+          onCancel = _this$props.onCancel,
+          onAdd = _this$props.onAdd;
+      return _react.default.createElement(_react.default.Fragment, null, open && _react.default.createElement("div", {
+        className: "new-classes"
+      }, _react.default.createElement("div", {
         className: "input-student"
       }, _react.default.createElement("input", {
         type: "text",
-        placeholder: "Novo aluno...",
+        placeholder: "Nome da Turma...",
         value: text,
         onChange: function onChange(event) {
           return _this2.setState({
             text: event.target.value
           });
         }
-      }));
+      })), _react.default.createElement("button", {
+        onClick: onCancel
+      }, "Cancelar"), _react.default.createElement("button", {
+        onClick: onAdd
+      }, "Adicionar")));
     }
   }]);
 
@@ -30175,7 +30184,7 @@ function () {
     key: "save",
     value: function save(key, values) {
       return new Promise(function (resolve, reject) {
-        window.localStorage.setItem("students", JSON.stringify(students));
+        window.localStorage.setItem(key, JSON.stringify(values));
         resolve();
       });
     }
@@ -30243,11 +30252,19 @@ function (_React$Component) {
     }
 
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ClassesPage)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
-      classes: []
+      classes: [],
+      openInput: false
     }, _temp));
   }
 
   _createClass(ClassesPage, [{
+    key: "setOpenInput",
+    value: function setOpenInput(value) {
+      this.setState({
+        openInput: value
+      });
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this2 = this;
@@ -30261,13 +30278,46 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
+      var _this$state = this.state,
+          classes = _this$state.classes,
+          openInput = _this$state.openInput;
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("h1", null, "Aulas Pr\xE1ticas"), _react.default.createElement("div", {
         className: "add-scope"
       }, _react.default.createElement("div", {
         className: "separator"
-      }), _react.default.createElement("button", null, _react.default.createElement("i", {
+      }), _react.default.createElement("button", {
+        onClick: function onClick() {
+          return _this3.setOpenInput(true);
+        }
+      }, _react.default.createElement("i", {
         className: "material-icons"
-      }, "add"))), _react.default.createElement(_newClasses.default, null));
+      }, "add"))), _react.default.createElement(_newClasses.default, {
+        open: openInput,
+        onCancel: function onCancel() {
+          return _this3.setOpenInput(false);
+        },
+        onAdd: function onAdd(text) {
+          if (!text) {
+            return null;
+          }
+
+          _this3.setState(function (prevState) {
+            var newClassesList = prevState.students.concat({
+              id: uuid(),
+              className: text,
+              students: []
+            });
+
+            _StudentsServices.default.save(KEY_STORAGE, newClassesList);
+
+            return {
+              classes: newClassesList
+            };
+          });
+        }
+      }));
     }
   }]);
 

@@ -8,7 +8,7 @@ class StudentService {
 
   static save(key, values) {
     return new Promise((resolve, reject) => {
-      window.localStorage.setItem("students", JSON.stringify(students));
+      window.localStorage.setItem(key, JSON.stringify(values));
       resolve();
     });
   }
